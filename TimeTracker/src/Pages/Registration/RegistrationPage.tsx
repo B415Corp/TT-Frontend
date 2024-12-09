@@ -1,7 +1,12 @@
+import { useQuery } from "@tanstack/react-query";
 import { UserRoundPlus } from "lucide-react";
 import { useForm } from "react-hook-form";
-import MainButton from "../../UI/Kit/Buttons/MainButton";
 import { useNavigate } from "react-router-dom";
+import {
+  iRegisterUser,
+  RegisterUser,
+} from "../../Features/Login_Registration/AuthServise";
+import MainButton from "../../UI/Kit/Buttons/MainButton";
 interface iRegistrationPage {}
 
 export default function RegistrationPage({}: iRegistrationPage) {
@@ -9,11 +14,10 @@ export default function RegistrationPage({}: iRegistrationPage) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<iRegisterUser>();
 
-  const onSubmit = (data: {}) => {
-    console.log("RESULT", data);
-    alert(JSON.stringify(data));
+  const onSubmit = (data: iRegisterUser) => {
+    RegisterUser(data);
   };
   console.log(errors);
 
@@ -34,10 +38,10 @@ export default function RegistrationPage({}: iRegistrationPage) {
             <input
               className="peer bg-transparent h-10 rounded-lg text-gray-200 placeholder-transparent ring-2 px-2 ring-gray-500 focus:ring-primary focus:outline-none"
               type="text"
-              {...register("Username", { required: true, maxLength: 80 })}
+              {...register("name", { required: true, maxLength: 80 })}
             />
             <p className="text-sm text-white">
-              {errors.Username && "Поле обязательно"}
+              {errors.name && "Поле обязательно"}
             </p>
           </div>
           <div className="flex flex-col gap-2">
@@ -45,10 +49,10 @@ export default function RegistrationPage({}: iRegistrationPage) {
             <input
               type="password"
               className="peer bg-transparent h-10  rounded-lg text-gray-200 placeholder-transparent ring-2 px-2 ring-gray-500 focus:ring-primary focus:outline-none"
-              {...register("Password", { required: true, maxLength: 100 })}
+              {...register("password", { required: true, maxLength: 100 })}
             />
             <p className="text-sm text-white">
-              {errors.Password && "Поле обязательно"}
+              {errors.password && "Поле обязательно"}
             </p>
           </div>
           <div className="flex flex-col gap-2">
@@ -56,19 +60,20 @@ export default function RegistrationPage({}: iRegistrationPage) {
             <input
               className="peer bg-transparent h-10  rounded-lg text-gray-200 placeholder-transparent ring-2 px-2 ring-gray-500 focus:ring-primary focus:outline-none"
               type="text"
-              {...register("Email", {
+              {...register("email", {
                 required: true,
                 pattern:
                   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
               })}
             />
             <p className="text-sm text-white">
-              {errors.Email && "Поле обязательно"}
+              {errors.email && "Поле обязательно"}
             </p>
           </div>
           <MainButton>Зарегистрироваться</MainButton>
 
-          <p className="text-sm text-white hover:underline cursor-pointer"
+          <p
+            className="text-sm text-white hover:underline cursor-pointer"
             onClick={() => {
               navigate("/login");
             }}
