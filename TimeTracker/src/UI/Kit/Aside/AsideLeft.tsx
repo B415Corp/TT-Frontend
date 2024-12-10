@@ -31,13 +31,13 @@ export default function AsideLeft({}: iAsideLeft) {
             <span className="text-sm">Проекты</span>
           </li>
         </Link>
-        <Link to="/projects" className="block text-white">
+        <Link to="/clients" className="block text-white">
           <li className="flex items-center space-x-2 p-2  px-4 hover:bg-accent2 rounded cursor-pointer">
             <Contact strokeWidth={1} />
             <span className="text-sm">Клиенты</span>
           </li>
         </Link >
-        <Link to="/projects" className="block text-white">
+        <Link to="/tags" className="block text-white">
           <li className="flex items-center space-x-2 p-2  px-4 hover:bg-accent2 rounded cursor-pointer">
             <Tags strokeWidth={1} />
             <span className="text-sm">Тэги</span>
