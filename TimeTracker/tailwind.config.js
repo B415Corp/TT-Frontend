@@ -6,7 +6,7 @@ export default {
       colors: {
         transparent: "transparent",
         primary: "#69d2e7",
-        secondary: "a7dbd8",
+        secondary: "#a7dbd8",
         background: "#e0e4cc",
         accent: "#f38630",
         accent2: "#fa6900",
