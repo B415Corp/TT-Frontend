@@ -21,31 +21,27 @@ function ProjectPage() {
   const [error, setError] = useState<Error | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    fetchProjects();
+  };
 
 
+  async function fetchProjects() {
+    try {
+      const data = await GetProjects();
+      console.log(data);
+      setProjects(data);
+      setLoading(false);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error("An error occurred"));
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function fetchProjects() {
-      try {
-        const data = await GetProjects();
-        console.log(data);
-        setProjects(data);
-        setLoading(false);
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error("An error occurred"));
-        setLoading(false);
-      }
-    }
-
     fetchProjects();
   }, [isModalOpen]);
-
-
-
-
-
-
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -79,6 +75,7 @@ function ProjectPage() {
             key={index}
             name={project.name}
             created_at={project.created_at}
+            project_id={project.project_id}
           ></ProjectCards>
         ))}
       </div>

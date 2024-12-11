@@ -32,6 +32,9 @@ export async function SetNewProjects(projectName: string, userIds: string[]) {
     throw new Error(`Error: ${errorData.message}`);
   }
 
+
+
+
   const data = await response.json();
   return data; // Возвращаем данные, если это необходимо
 }

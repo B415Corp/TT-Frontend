@@ -8,12 +8,19 @@ import Layout from "./Pages/Layout/Layout.tsx";
 import LoginPage from "./Pages/Login/LoginPage.tsx";
 import MainPage from "./Pages/MainPage/MainPage.tsx";
 import NotFound from "./Pages/Not Found/Not Found.tsx";
-import RegistrationPage from "./Pages/Registration/RegistrationPage.tsx";
 import Projects from "./Pages/Projects/Projects.tsx";
+import RegistrationPage from "./Pages/Registration/RegistrationPage.tsx";
+import Tasks from "./Pages/Tasks/Tasks.tsx";
+import { SnackbarProvider } from "notistack";
 
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <SnackbarProvider
+      maxSnack={3}
+      preventDuplicate
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+    />
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
@@ -31,6 +38,14 @@ createRoot(document.getElementById("root")!).render(
               element={
                 <PrivateRoute>
                   <Projects></Projects>
+                </PrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="projects/:id"
+              element={
+                <PrivateRoute>
+                  <Tasks></Tasks>
                 </PrivateRoute>
               }
             ></Route>

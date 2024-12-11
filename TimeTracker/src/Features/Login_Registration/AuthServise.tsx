@@ -46,7 +46,7 @@ export function LoginUserUser(cridentials: iLoginUser) {
       return res.json();
     })
     .then((data) => {
-      Cookies.set("Token", data.data.token);
+      Cookies.set("Token", data.data.token, { expires: 1 });
       window.location.href = "/projects";
     })
     .catch((err) => {

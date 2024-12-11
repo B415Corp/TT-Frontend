@@ -1,20 +1,24 @@
 import { useForm } from "react-hook-form";
-import MainButton from "../../UI/Kit/Buttons/MainButton";
 import { SetNewProjects } from "../../Features/Project/ProjectServices";
+import MainButton from "../../UI/Kit/Buttons/MainButton";
+import { enqueueSnackbar } from "notistack";
 
 interface iNewProjectForm {
-  close: () => void
+  close: () => void;
 }
 
-export default function NewProjectForm({close}: iNewProjectForm) {
+export default function NewProjectForm({ close }: iNewProjectForm) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<{projectName: string, userIds: string[]}>();
-  const onSubmit = (data:{projectName: string, userIds: string[]}) => {
-    SetNewProjects(data.projectName, data.userIds);
-    close();
+  } = useForm<{ projectName: string; userIds: string[] }>();
+  const onSubmit = (data: { projectName: string; userIds: string[] }) => {
+    SetNewProjects(data.projectName, data.userIds)
+      .then((res) => close())
+      .catch((err) => {
+        enqueueSnackbar(err.message, { variant: "error" });
+      });
   };
   return (
     <div>
