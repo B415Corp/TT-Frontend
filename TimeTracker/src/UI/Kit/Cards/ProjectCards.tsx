@@ -20,7 +20,7 @@ export default function ProjectCards({
   return (
     <div
       onClick={() => navigate(`/projects/${project_id}`)}
-      className="flex flex-row  text-white border-b py-4 bg-secondary hover:bg-primary"
+      className="flex flex-row  text-white border-b py-1  hover:bg-primary"
     >
       <span className="w-3/4 pl-44">{name}</span>
       <div className="flex flex-row justify-around w-full ">
