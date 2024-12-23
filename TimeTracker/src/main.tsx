@@ -13,6 +13,13 @@ import RegistrationPage from "./Pages/Registration/RegistrationPage.tsx";
 import Tasks from "./Pages/Tasks/Tasks.tsx";
 import { SnackbarProvider } from "notistack";
 
+
+
+
+
+
+
+
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

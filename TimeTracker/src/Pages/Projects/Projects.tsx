@@ -1,6 +1,7 @@
-import { Plus } from "lucide-react";
+import { ArrowBigLeft, ArrowBigRight, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { GetProjects } from "../../Features/Project/ProjectServices";
+import MainButton from "../../UI/Kit/Buttons/MainButton";
 import ProjectCards from "../../UI/Kit/Cards/ProjectCards";
 import Modal from "../../UI/Kit/PopUps/ProjectPopUp";
 import NewProjectForm from "./NewProjectForm";
@@ -20,18 +21,20 @@ function ProjectPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pages, setPages] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
     fetchProjects();
   };
 
-
   async function fetchProjects() {
     try {
-      const data = await GetProjects();
+      const data = await GetProjects(pages);
       console.log(data);
-      setProjects(data);
+      setProjects(data.data);
+      setTotalPages(data.meta.totalPages);
       setLoading(false);
     } catch (err) {
       setError(err instanceof Error ? err : new Error("An error occurred"));
@@ -41,15 +44,15 @@ function ProjectPage() {
 
   useEffect(() => {
     fetchProjects();
-  }, [isModalOpen]);
+  }, [isModalOpen, pages]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-  if (!projects) return <div>No projects found</div>;
+  if (!projects) return <div className="text-white">No projects found</div>;
 
   return (
-    <div className="flex flex-col w-full">
-      <div className="flex flex-row justify-end w-full h-8 m-4 pr-10">
+    <div className="flex flex-col  ">
+      <div className="flex flex-row justify-end h-8 m-4 pr-10">
         <Modal isOpen={isModalOpen} close={closeModal}>
           <NewProjectForm close={closeModal}></NewProjectForm>
         </Modal>
@@ -78,6 +81,33 @@ function ProjectPage() {
             project_id={project.project_id}
           ></ProjectCards>
         ))}
+      </div>
+      <div className="flex flex-row justify-center  h-8 m-4 pr-10 gap-10">
+        <button
+          onClick={() => {
+            if (pages <= 1) {
+              setPages(1);
+            } else {
+              setPages(pages - 1);
+            }
+          }}
+          className="flex items-center justify-center gap-2 bg-primary  text-white  py-4 px-6 rounded-xl hover:scale-105 duration-500"
+        >
+          <ArrowBigLeft />
+        </button>
+        {<span className="text-white flex flex-row items-center">{pages}</span>}
+        <button
+          onClick={() => {
+            if (pages >= totalPages) {
+              setPages(totalPages);
+            } else {
+              setPages(pages + 1);
+            }
+          }}
+          className="flex items-center justify-center gap-2 bg-primary  text-white  py-4 px-6 rounded-xl hover:scale-105 duration-500"
+        >
+          <ArrowBigRight />
+        </button>
       </div>
     </div>
   );
