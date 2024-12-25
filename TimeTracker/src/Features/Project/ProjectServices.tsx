@@ -39,16 +39,32 @@ export async function SetNewProjects(projectName: string, userIds: string[]) {
   return data; // Возвращаем данные, если это необходимо
 }
 
-
-
 export async function DelProjectService(project_id: string) {
-  const response = await fetch(import.meta.env.VITE_DB + "/projects/" + project_id, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${Cookies.get("Token")}`,
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    import.meta.env.VITE_DB + "/projects/" + project_id,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("Token")}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const res = await response.json();
+  return res;
+}
+
+export async function GetProjectsByID(ProjectId: string) {
+  const response = await fetch(
+    (import.meta.env.VITE_DB + "/projects/" + ProjectId  ) as string,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("Token")}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const res = await response.json();
   return res;
 }

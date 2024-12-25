@@ -1,7 +1,6 @@
 import {
   ArrowBigLeft,
   ArrowBigRight,
-  ChevronRight,
   CircleX,
   LayoutDashboard,
   Plus,
@@ -9,7 +8,10 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { DelProjectService } from "../../Features/Project/ProjectServices";
+import {
+  DelProjectService,
+  GetProjectsByID,
+} from "../../Features/Project/ProjectServices";
 import { GetTasks } from "../../Features/Task/TaskServices";
 import TaskCards from "../../UI/Kit/Cards/TaskCards";
 import Modal from "../../UI/Kit/PopUps/ProjectPopUp";
@@ -39,6 +41,7 @@ export default function Tasks({}: iTasks) {
   const [error, setError] = useState<Error | null>(null);
   const [del, setDel] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [projectName, setprojectName] = useState<string>("projectName");
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
@@ -68,12 +71,18 @@ export default function Tasks({}: iTasks) {
   }
 
   useEffect(() => {
+    GetProjectsByID(params.id as string).then((res) =>
+      setprojectName(res.data.name)
+    );
+  }, []);
+
+  useEffect(() => {
     fetchTasks();
   }, [pages, del]);
   if (!tasks) return <div>No projects found</div>;
 
   return (
-    <div className="text-white flex flex-col">
+    <div className="flex flex-col bg-header mt-8 mx-20 rounded-xl ">
       <Modal isOpen={isModalOpen} close={closeModal}>
         <NewTaskForm close={closeModal} id={params.id as string}></NewTaskForm>
       </Modal>
@@ -101,25 +110,13 @@ export default function Tasks({}: iTasks) {
           </div>
         </div>
       </Modal>
-      <div className="flex flex-row pt-4 px-4">
-        <div className="flex flex-row w-full  text-xl items-center gap-4 ">
-          Проекты <ChevronRight />
-          project name
+      <div className="flex flex-col pt-4 px-4">
+        <div className="flex flex-row w-full text-white text-xl items-center gap-4 ">
+          {projectName}
         </div>
-        <div className="flex flex-row gap-4">
-          <div className="flex flex-row w-full">
-            <button className="flex items-center justify-center gap-2 bg-primary  text-white  py-2 px-6 rounded-xl ">
-              <TableOfContents />
-              Список
-            </button>
-          </div>
-          <div className="flex flex-row w-full">
-            <button className="flex items-center justify-center gap-2 bg-primary  text-white  py-2 px-6 rounded-xl ">
-              <LayoutDashboard />
-              Доска
-            </button>
-          </div>
-        </div>
+        <span className="text-sm text-accent2">
+          Показано {"3"} из {"12"} задач
+        </span>
       </div>
       <div className="flex flex-col pt-4 ">
         <div className="flex flex-row justify-between w-full ">

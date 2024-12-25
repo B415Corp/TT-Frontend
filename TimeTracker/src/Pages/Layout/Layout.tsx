@@ -8,7 +8,7 @@ export default function Layout({}: iLayout) {
   return (
     <div className="flex flex-col   gap-2 min-h-screen  bg-background">
       <div className="flex flex-row ">
-        <AsideLeft></AsideLeft>
+        {/* <AsideLeft></AsideLeft> */}
         <div className="flex flex-col w-full">
           <Header></Header>
           <Outlet />

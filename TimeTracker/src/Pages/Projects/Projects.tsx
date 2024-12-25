@@ -1,7 +1,6 @@
-import { ArrowBigLeft, ArrowBigRight, Plus } from "lucide-react";
+import { ArrowBigLeft, ArrowBigRight, CirclePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { GetProjects } from "../../Features/Project/ProjectServices";
-import MainButton from "../../UI/Kit/Buttons/MainButton";
 import ProjectCards from "../../UI/Kit/Cards/ProjectCards";
 import Modal from "../../UI/Kit/PopUps/ProjectPopUp";
 import NewProjectForm from "./NewProjectForm";
@@ -14,10 +13,16 @@ interface Project {
   user_owner_id: string;
   created_at: string;
   updated_at: string;
+  total?: string;
+}
+
+interface Meta {
+  total: string;
 }
 
 function ProjectPage() {
   const [projects, setProjects] = useState<Project[] | null>(null);
+  const [Metaprojects, setMetaProjects] = useState<Meta | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,6 +39,7 @@ function ProjectPage() {
       const data = await GetProjects(pages);
       console.log(data);
       setProjects(data.data);
+      setMetaProjects(data.meta);
       setTotalPages(data.meta.totalPages);
       setLoading(false);
     } catch (err) {
@@ -49,30 +55,31 @@ function ProjectPage() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (!projects) return <div className="text-white">No projects found</div>;
+  if (!Metaprojects) return <div className="text-white">No projects found</div>;
 
   return (
-    <div className="flex flex-col  ">
-      <div className="flex flex-row justify-end h-8 m-4 pr-10">
+    <div className="flex flex-col bg-header mt-8 mx-20 rounded-xl ">
+      <div className="flex flex-row justify-between h-8 m-4 pr-10">
         <Modal isOpen={isModalOpen} close={closeModal}>
           <NewProjectForm close={closeModal}></NewProjectForm>
         </Modal>
+
+        <div className="flex flex-col ">
+          <span className="text-2xl text-white">Проекты</span>
+          <span className="text-sm text-accent2">
+            Показано {projects.length} из {Metaprojects.total} проектов
+          </span>
+        </div>
         <button
           onClick={openModal}
-          className="flex items-center justify-center gap-2 bg-primary  text-white  py-4 px-6 rounded-xl "
+          className="flex items-center justify-center gap-2 bg-primary  text-white  py-5 px-5 rounded-md "
         >
-          <Plus />
-          Новый проект
+          <CirclePlus />
+          Добавить проект
         </button>
       </div>
-      <div className="flex flex-row w-full  h-8 py-8 border-b items-center bg-primary text-white">
-        <span className="w-3/4 pl-44">Проект</span>
-        <div className="flex flex-row justify-around w-full ">
-          <span className="max-w-32 overflow-hidden">Дата создания</span>
-          <span className="max-w-32 overflow-hidden">Общее время</span>
-          <span className="max-w-32 overflow-hidden">Владелец</span>
-        </div>
-      </div>
-      <div className="flex flex-col  w-full  ">
+
+      <div className="flex flex-wrap gap-8 items-center justify-center  w-full pt-8  ">
         {projects.map((project: Project, index) => (
           <ProjectCards
             key={index}
