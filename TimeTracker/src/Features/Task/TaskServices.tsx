@@ -40,7 +40,7 @@ export async function DelTaskService(task_id: string) {
   return res;
 }
 
-export async function NewTaskService(taskName:string,project_id: string) {
+export async function NewTaskService(taskName: string, project_id: string) {
   const response = await fetch(import.meta.env.VITE_DB + "/tasks/create", {
     method: "POST",
     headers: {
@@ -54,6 +54,21 @@ export async function NewTaskService(taskName:string,project_id: string) {
       is_paid: true,
       payment_type: "hourly",
       rate: 0,
+    }),
+  });
+  const res = await response.json();
+  return res;
+}
+
+export async function IsPaidTaskServise(status: boolean, task_id: string) {
+  const response = await fetch(import.meta.env.VITE_DB + "/tasks/" + task_id, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${Cookies.get("Token")}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      is_paid: status,
     }),
   });
   const res = await response.json();

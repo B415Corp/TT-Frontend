@@ -1,4 +1,9 @@
-import { ArrowBigLeft, ArrowBigRight, CirclePlus } from "lucide-react";
+import {
+  ArrowBigLeft,
+  ArrowBigRight,
+  CirclePlus,
+  LoaderCircle,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { GetProjects } from "../../Features/Project/ProjectServices";
 import ProjectCards from "../../UI/Kit/Cards/ProjectCards";
@@ -52,14 +57,21 @@ function ProjectPage() {
     fetchProjects();
   }, [isModalOpen, pages]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex h-screen w-full justify-center items-center text-white rota">
+        <div className="flex justify-center items-center animate-spin">
+          <LoaderCircle size={164} />
+        </div>
+      </div>
+    );
   if (error) return <div>Error: {error.message}</div>;
   if (!projects) return <div className="text-white">No projects found</div>;
   if (!Metaprojects) return <div className="text-white">No projects found</div>;
 
   return (
-    <div className="flex flex-col bg-header mt-8 mx-20 rounded-xl ">
-      <div className="flex flex-row justify-between h-8 m-4 pr-10">
+    <div className="flex flex-col bg-header mt-8 mx-20 rounded-xl p-8">
+      <div className="flex flex-row justify-between h-8  ">
         <Modal isOpen={isModalOpen} close={closeModal}>
           <NewProjectForm close={closeModal}></NewProjectForm>
         </Modal>
