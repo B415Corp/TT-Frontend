@@ -1,9 +1,9 @@
 import {
-  ArrowBigLeft,
-  ArrowBigRight,
   LoaderCircle,
   Pen,
   Plus,
+  RefreshCcw,
+  Settings,
   Trash2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -16,6 +16,7 @@ import { GetTasks } from "../../Features/Task/TaskServices";
 import TaskCards from "../../UI/Kit/Cards/TaskCards";
 import Modal from "../../UI/Kit/PopUps/ProjectPopUp";
 import NewTaskForm from "./NewTaskForm";
+import { set } from "react-hook-form";
 
 interface iTasks {}
 
@@ -35,18 +36,23 @@ interface Task {
 export default function Tasks({}: iTasks) {
   let params = useParams();
   const [tasks, setTasks] = useState<Task[] | null>(null);
+  const [oldtasks, setOldTasks] = useState<Task[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [pages, setPages] = useState<number>(1);
   const [error, setError] = useState<Error | null>(null);
-  const [del, setDel] = useState<number>(0);
+  const [del, setDel] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectName, setprojectName] = useState<string>("projectName");
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
-    fetchTasks();
+    GetTasks(1, params.id as string).then((res) => {
+      if (tasks) {
+        setTasks([res.data[0], ...tasks]);
+      }
+    });
   };
 
   let navigate = useNavigate();
@@ -60,8 +66,14 @@ export default function Tasks({}: iTasks) {
   async function fetchTasks() {
     try {
       const data = await GetTasks(pages, params.id as string);
-      console.log(data);
-      setTasks(data.data);
+      if (pages > 1) {
+        if (tasks) {
+          setTasks([...tasks, ...data.data]);
+        }
+      } else {
+        setTasks(data.data);
+      }
+
       setTotalPages(data.meta.totalPages);
       setLoading(false);
     } catch (err) {
@@ -71,14 +83,25 @@ export default function Tasks({}: iTasks) {
   }
 
   useEffect(() => {
-    GetProjectsByID(params.id as string).then((res) =>
-      setprojectName(res.data.name)
-    );
+    GetProjectsByID(params.id as string).then((res) => {
+      setprojectName(res.data.name);
+      fetchTasks();
+    });
   }, []);
 
   useEffect(() => {
+    tasks?.forEach((task, index) => {
+      if (task.task_id == del) {
+        tasks.splice(index, 1);
+        setDel("");
+      }
+    });
+  }, [del]);
+
+  useEffect(() => {
     fetchTasks();
-  }, [pages, del]);
+  }, [pages]);
+
   if (loading)
     return (
       <div className="flex h-screen w-full justify-center items-center text-white rota">
@@ -90,7 +113,7 @@ export default function Tasks({}: iTasks) {
   if (!tasks) return <div>No projects found</div>;
 
   return (
-    <div className="flex flex-col bg-header mt-8 mx-20 rounded-xl p-8 ">
+    <div className="flex flex-col bg-header my-8 mx-20 rounded-xl p-8 ">
       <Modal isOpen={isModalOpen} close={closeModal}>
         <NewTaskForm close={closeModal} id={params.id as string}></NewTaskForm>
       </Modal>
@@ -128,6 +151,12 @@ export default function Tasks({}: iTasks) {
           </span>
         </div>
         <div className="flex flex-row">
+          <button
+            onClick={openModal2}
+            className="flex w-12 h-12   items-center justify-center gap-2 bg-accent   text-accent2  p-2  rounded-xl m-2"
+          >
+            <Settings size={26} />
+          </button>
           <button
             onClick={openModal}
             className="flex w-12 h-12 items-center justify-center gap-2 bg-accent  text-accent2  p-2  rounded-xl my-2 mx-2"
@@ -169,35 +198,21 @@ export default function Tasks({}: iTasks) {
       </div>
       <div className="flex flex-row justify-center  h-8 m-4 pr-10 gap-10 ">
         <div className="flex flex-row justify-center w-full h-8 m-4 pr-10 gap-10">
-          <button
-            onClick={() => {
-              if (pages <= 1) {
-                setPages(1);
-              } else {
-                setPages(pages - 1);
-              }
-            }}
-            className="flex items-center justify-center gap-2 bg-primary  text-white  py-4 px-6 rounded-xl hover:scale-105 duration-500"
-          >
-            <ArrowBigLeft />
-          </button>
-          {
-            <span className="text-white flex flex-row items-center">
-              {pages}
-            </span>
-          }
-          <button
-            onClick={() => {
-              if (pages >= totalPages) {
-                setPages(totalPages);
-              } else {
+          {pages < totalPages ? (
+            <button
+              onClick={() => {
                 setPages(pages + 1);
-              }
-            }}
-            className="flex items-center justify-center gap-2 bg-primary  text-white  py-4 px-6 rounded-xl hover:scale-105 duration-500"
-          >
-            <ArrowBigRight />
-          </button>
+              }}
+              className="flex items-center justify-center gap-2 bg-primary  text-white  py-5 px-6 rounded-xl hover:scale-105  duration-500"
+            >
+              <div className="hover:animate-spin">
+                <RefreshCcw />
+              </div>
+              Показать ещё
+            </button>
+          ) : (
+            <span className="text-sm text-accent2">Заданий больше нет ...</span>
+          )}
         </div>
       </div>
     </div>

@@ -20,6 +20,7 @@ export async function StartTimeLogs(task_id: string) {
     }
   );
   const res = await response.json();
+
   return res;
 }
 

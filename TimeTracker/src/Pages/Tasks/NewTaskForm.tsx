@@ -25,7 +25,7 @@ export default function NewTaskForm({ close, id }: iNewtaskForm) {
 
   const onSubmit = (data: { taskName: string; userIds: string[] }) => {
     NewTaskService(data.taskName, id)
-      .then((res) => close())
+      .then((res) => { close() })
       .catch((err) => {
         enqueueSnackbar(err.message, { variant: "error" });
       });
