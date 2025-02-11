@@ -1,4 +1,4 @@
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, Pen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { convertTimeFormat } from "./TaskCards";
 
@@ -24,15 +24,24 @@ export default function ProjectCards({
       className="flex flex-row w-[32rem] h-32 bg-accent rounded-xl"
       onClick={() => navigate(`/projects/${project_id}`)}
     >
-      <div className="flex flex-col w-2/4 pl-4 pt-2 gap-1">
-        <span className="text-white text-lg">{name}</span>
+      <div className="flex w-full flex-col pl-4 pt-2 gap-1">
+        <div className="flex  flex-row justify-between">
+          <span className="text-white text-lg">{name}</span>{" "}
+          <button
+            // onClick={() => DelTask(del, setDel, task_id)}
+            onClick={() => {}}
+            className="flex  items-center justify-center gap-2 bg-accent2  text-accent mx-2  p-2  rounded-xl "
+          >
+            <Pen size={20} />
+          </button>
+        </div>
+
         <div className="text-accent2 text-xs flex flex-row gap-1 ">
           <CalendarDays size={16} strokeWidth={1} />
           <span>Создано </span>
           {convertTimeFormat(created_at)}
         </div>
       </div>
-      <div className="flex flex-col w-2/4"></div>
     </div>
   );
 }

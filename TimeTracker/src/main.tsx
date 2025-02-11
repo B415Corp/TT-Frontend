@@ -1,24 +1,20 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SnackbarProvider } from "notistack";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { PrivateRoute } from "./Features/Login_Registration/PrivateRoutes.tsx";
 import "./index.css";
+import Clients from "./Pages/Clients/Clients.tsx";
 import Layout from "./Pages/Layout/Layout.tsx";
 import LoginPage from "./Pages/Login/LoginPage.tsx";
 import MainPage from "./Pages/MainPage/MainPage.tsx";
 import NotFound from "./Pages/Not Found/Not Found.tsx";
+import Notes from "./Pages/Notes/Notes.tsx";
 import Projects from "./Pages/Projects/Projects.tsx";
 import RegistrationPage from "./Pages/Registration/RegistrationPage.tsx";
 import Tasks from "./Pages/Tasks/Tasks.tsx";
-import { SnackbarProvider } from "notistack";
-
-
-
-
-
-
-
+import SharedProjects from "./Pages/Shared projects/Shared_projects.tsx";
 
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
@@ -45,6 +41,39 @@ createRoot(document.getElementById("root")!).render(
               element={
                 <PrivateRoute>
                   <Projects></Projects>
+                </PrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="main"
+              element={
+                <PrivateRoute>
+                  <MainPage></MainPage>
+                </PrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="clients"
+              element={
+                <PrivateRoute>
+                  <Clients></Clients>
+                </PrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="sheared"
+              element={
+                <PrivateRoute>
+                  <SharedProjects></SharedProjects>
+                </PrivateRoute>
+              }
+            ></Route>
+
+            <Route
+              path="notes"
+              element={
+                <PrivateRoute>
+                  <Notes></Notes>
                 </PrivateRoute>
               }
             ></Route>

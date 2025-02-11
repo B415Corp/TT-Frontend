@@ -293,7 +293,7 @@ export default function TaskCards({
         </div>
       );
     case "redact":
-      return <RedactCard setStarted={setIsStarted}></RedactCard>;
+      return <RedactCard setStarted={setIsStarted} task_id={task_id}></RedactCard>;
   }
 }
 

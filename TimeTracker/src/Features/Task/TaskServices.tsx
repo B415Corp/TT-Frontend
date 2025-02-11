@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { iFormData } from "../../UI/Kit/Cards/RedactCard";
 
 interface iTaskServices {}
 
@@ -70,6 +71,32 @@ export async function IsPaidTaskServise(status: boolean, task_id: string) {
     body: JSON.stringify({
       is_paid: status,
     }),
+  });
+  const res = await response.json();
+  return res;
+}
+
+export async function CuranciesTaskServise() {
+  const response = await fetch(import.meta.env.VITE_DB + "/currencies", {
+    method: "get",
+    headers: {
+      Authorization: `Bearer ${Cookies.get("Token")}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const res = await response.json();
+  return res;
+}
+
+export async function RedactTaskService(data: iFormData, TaskID: string) {
+  console.log(JSON.stringify({data}));
+  const response = await fetch(import.meta.env.VITE_DB + "/tasks/" + TaskID , {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${Cookies.get("Token")}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   });
   const res = await response.json();
   return res;
