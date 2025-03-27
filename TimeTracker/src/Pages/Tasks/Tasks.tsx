@@ -183,9 +183,9 @@ export default function Tasks({}: iTasks) {
           </button>
         </div>
 
-        {tasks.map((project: Task, index) => (
+        {tasks.map((project: Task) => (
           <TaskCards
-            key={index}
+            key={project.task_id}
             name={project.name}
             created_at={project.created_at}
             project_id={project.project_id}
