@@ -4,7 +4,7 @@ interface iNotesServices {}
 
 export async function GetNotes(page: number = 1) {
   const response = await fetch(
-    (import.meta.env.VITE_DB + "/notes/me" + "?page=" + page) as string,
+    (import.meta.env.VITE_API_URL + "/notes/me" + "?page=" + page) as string,
     {
       method: "GET",
       headers: {
@@ -18,7 +18,7 @@ export async function GetNotes(page: number = 1) {
 }
 
 export async function SetNewNotes(NoteName: string, NoteText: string) {
-  const response = await fetch(import.meta.env.VITE_DB + "/notes", {
+  const response = await fetch(import.meta.env.VITE_API_URL + "/notes", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${Cookies.get("Token")}`,
@@ -32,7 +32,7 @@ export async function SetNewNotes(NoteName: string, NoteText: string) {
 }
 
 export async function DelNotes(NoteID: string) {
-  const response = await fetch(import.meta.env.VITE_DB + "/notes/" + NoteID, {
+  const response = await fetch(import.meta.env.VITE_API_URL + "/notes/" + NoteID, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${Cookies.get("Token")}`,
@@ -45,7 +45,7 @@ export async function DelNotes(NoteID: string) {
 
 
 export async function RedactNotes(name: string, text_content: string , notes_id: string) {
-  const response = await fetch(import.meta.env.VITE_DB + "/notes/" + notes_id, {
+  const response = await fetch(import.meta.env.VITE_API_URL + "/notes/" + notes_id, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${Cookies.get("Token")}`,

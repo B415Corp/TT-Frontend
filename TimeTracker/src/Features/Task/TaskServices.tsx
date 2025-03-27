@@ -10,7 +10,7 @@ export default function TaskServices({}: iTaskServices) {
 export async function GetTasks(page: number = 1, project_id: string) {
   console.log(project_id);
   const response = await fetch(
-    (import.meta.env.VITE_DB +
+    (import.meta.env.VITE_API_URL +
       "/tasks/" +
       project_id +
       "/tasks" +
@@ -30,7 +30,7 @@ export async function GetTasks(page: number = 1, project_id: string) {
 }
 
 export async function DelTaskService(task_id: string) {
-  const response = await fetch(import.meta.env.VITE_DB + "/tasks/" + task_id, {
+  const response = await fetch(import.meta.env.VITE_API_URL + "/tasks/" + task_id, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${Cookies.get("Token")}`,
@@ -42,7 +42,7 @@ export async function DelTaskService(task_id: string) {
 }
 
 export async function NewTaskService(taskName: string, project_id: string) {
-  const response = await fetch(import.meta.env.VITE_DB + "/tasks/create", {
+  const response = await fetch(import.meta.env.VITE_API_URL + "/tasks/create", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${Cookies.get("Token")}`,
@@ -62,7 +62,7 @@ export async function NewTaskService(taskName: string, project_id: string) {
 }
 
 export async function IsPaidTaskServise(status: boolean, task_id: string) {
-  const response = await fetch(import.meta.env.VITE_DB + "/tasks/" + task_id, {
+  const response = await fetch(import.meta.env.VITE_API_URL + "/tasks/" + task_id, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${Cookies.get("Token")}`,
@@ -77,7 +77,7 @@ export async function IsPaidTaskServise(status: boolean, task_id: string) {
 }
 
 export async function CuranciesTaskServise() {
-  const response = await fetch(import.meta.env.VITE_DB + "/currencies", {
+  const response = await fetch(import.meta.env.VITE_API_URL + "/currencies", {
     method: "get",
     headers: {
       Authorization: `Bearer ${Cookies.get("Token")}`,
@@ -90,7 +90,7 @@ export async function CuranciesTaskServise() {
 
 export async function RedactTaskService(data: iFormData, TaskID: string) {
   console.log(JSON.stringify({data}));
-  const response = await fetch(import.meta.env.VITE_DB + "/tasks/" + TaskID , {
+  const response = await fetch(import.meta.env.VITE_API_URL + "/tasks/" + TaskID , {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${Cookies.get("Token")}`,

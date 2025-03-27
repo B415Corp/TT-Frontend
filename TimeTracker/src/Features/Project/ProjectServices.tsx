@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export async function GetProjects(page: number = 1) {
   const response = await fetch(
-    (import.meta.env.VITE_DB + "/projects/me" + "?page=" + page) as string,
+    (import.meta.env.VITE_API_URL + "/projects/me" + "?page=" + page) as string,
     {
       method: "GET",
       headers: {
@@ -17,7 +17,7 @@ export async function GetProjects(page: number = 1) {
 }
 
 export async function SetNewProjects(projectName: string, userIds: string[]) {
-  const response = await fetch(import.meta.env.VITE_DB + "/projects/create", {
+  const response = await fetch(import.meta.env.VITE_API_URL + "/projects/create", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${Cookies.get("Token")}`,
@@ -41,7 +41,7 @@ export async function SetNewProjects(projectName: string, userIds: string[]) {
 
 export async function DelProjectService(project_id: string) {
   const response = await fetch(
-    import.meta.env.VITE_DB + "/projects/" + project_id,
+    import.meta.env.VITE_API_URL + "/projects/" + project_id,
     {
       method: "DELETE",
       headers: {
@@ -56,7 +56,7 @@ export async function DelProjectService(project_id: string) {
 
 export async function GetProjectsByID(ProjectId: string) {
   const response = await fetch(
-    (import.meta.env.VITE_DB + "/projects/" + ProjectId  ) as string,
+    (import.meta.env.VITE_API_URL + "/projects/" + ProjectId  ) as string,
     {
       method: "GET",
       headers: {

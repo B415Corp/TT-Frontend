@@ -12,7 +12,7 @@ export interface iLoginUser {
 }
 
 export function RegisterUser(cridentials: iRegisterUser) {
-  fetch(import.meta.env.VITE_DB + "/users/register", {
+  fetch(import.meta.env.VITE_API_URL + "/users/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export function RegisterUser(cridentials: iRegisterUser) {
 }
 
 export function LoginUserUser(cridentials: iLoginUser) {
-  fetch(import.meta.env.VITE_DB + "/auth/login", {
+  fetch(import.meta.env.VITE_API_URL + "/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

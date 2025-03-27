@@ -8,7 +8,7 @@ export default function UserServises({}: iUserServises) {
 
 export async function GetUser() {
   const response = await fetch(
-    (import.meta.env.VITE_DB + "/users/me") as string,
+    (import.meta.env.VITE_API_URL + "/users/me") as string,
     {
       method: "GET",
       headers: {

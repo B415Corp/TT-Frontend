@@ -7,7 +7,7 @@ export default function TimeLogServises({}: iTimeLogServises) {
 
 export async function StartTimeLogs(task_id: string) {
   const response = await fetch(
-    import.meta.env.VITE_DB + "/time-logs/" + task_id + "/start",
+    import.meta.env.VITE_API_URL + "/time-logs/" + task_id + "/start",
     {
       method: "POST",
       headers: {
@@ -26,7 +26,7 @@ export async function StartTimeLogs(task_id: string) {
 
 export async function EndTimeLogs(task_id: string) {
   const response = await fetch(
-    import.meta.env.VITE_DB + "/time-logs/" + task_id + "/stop",
+    import.meta.env.VITE_API_URL + "/time-logs/" + task_id + "/stop",
     {
       method: "PATCH",
       headers: {
@@ -44,7 +44,7 @@ export async function EndTimeLogs(task_id: string) {
 
 export async function GetTimeLogsAll(task_id: string) {
   const response = await fetch(
-    import.meta.env.VITE_DB + "/time-logs/" + task_id + "/logs",
+    import.meta.env.VITE_API_URL + "/time-logs/" + task_id + "/logs",
     {
       method: "GET",
       headers: {
